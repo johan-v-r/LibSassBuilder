@@ -4,13 +4,14 @@
     <id>LibSassBuilder</id>
     <version>1.0.0</version>
     <title>LibSassBuilder</title>
-    <summary>Add auto build for .scss files</summary>
+    <summary>Add auto build task for .scss files</summary>
     <authors>JvR</authors>
     <owners>JvR</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Compile Sass files to css on project build.</description>
     <tags>Sass Build LibSass</tags>
     <projectUrl>https://github.com/johan-v-r/LibSassBuilder</projectUrl>
-    <iconUrl>https://raw.githubusercontent.com/johan-v-r/LibSassBuilder/main/package/sass.png</iconUrl>
+    <license type="expression">MIT</license>
+    <icon>sass.png</icon>
   </metadata>
 </package>
