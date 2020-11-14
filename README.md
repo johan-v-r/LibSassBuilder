@@ -1,5 +1,7 @@
 # LibSassBuilder
 
+![Nuget](https://img.shields.io/nuget/v/LibSassBuilder)
+
 > Inspired by [Delegate.SassBuilder](https://github.com/delegateas/Delegate.SassBuilder) and [LibSassHost](https://github.com/Taritsyn/LibSassHost)
 
 ![LibSassBuilder](https://raw.githubusercontent.com/johan-v-r/LibSassBuilder/main/package/sass.png)
