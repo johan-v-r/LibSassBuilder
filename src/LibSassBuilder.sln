@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30709.132
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibSassBuilder", "LibSassBuilder\LibSassBuilder.csproj", "{0DB56568-9B61-47C7-9B3A-74AD4B3EEC9A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0DB56568-9B61-47C7-9B3A-74AD4B3EEC9A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0DB56568-9B61-47C7-9B3A-74AD4B3EEC9A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0DB56568-9B61-47C7-9B3A-74AD4B3EEC9A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0DB56568-9B61-47C7-9B3A-74AD4B3EEC9A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {49B21107-8AFF-4E34-BB62-73EAB3FAC6A5}
+	EndGlobalSection
+EndGlobal
