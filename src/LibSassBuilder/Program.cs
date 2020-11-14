@@ -10,7 +10,7 @@ namespace LibSassBuilder
 		static async Task Main(string[] args)
 		{
 			var searchDirectory = args.Length > 0 ? args[0] : Directory.GetCurrentDirectory();
-			Console.WriteLine($"Search Directory: {searchDirectory}");
+			Console.WriteLine($"Sass compile directory: {searchDirectory}");
 
 			var sassFiles = Directory.GetFiles(searchDirectory, "*.scss", SearchOption.AllDirectories);
 
