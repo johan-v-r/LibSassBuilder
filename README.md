@@ -1,4 +1,4 @@
-# LibSassBuilder - ![Nuget](https://img.shields.io/nuget/v/LibSassBuilder)
+# LibSassBuilder - [![Nuget](https://img.shields.io/nuget/v/LibSassBuilder)](https://www.nuget.org/packages/LibSassBuilder/)
 
 > Inspired by [Delegate.SassBuilder](https://github.com/delegateas/Delegate.SassBuilder) and [LibSassHost](https://github.com/Taritsyn/LibSassHost)
 
