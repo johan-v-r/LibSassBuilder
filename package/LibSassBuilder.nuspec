@@ -2,15 +2,16 @@
 <package >
   <metadata>
     <id>LibSassBuilder</id>
-    <version>1.0.0</version>
+    <version>1.1.0</version>
     <title>LibSassBuilder</title>
-    <summary>Add auto build task for .scss files</summary>
-    <authors>JvR</authors>
-    <owners>JvR</owners>
+    <summary>Auto build task to compile .scss/.sass files to .css</summary>
+    <authors>Johan van Rensburg</authors>
+    <owners>Johan van Rensburg</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Compile Sass files to css on project build.</description>
-    <tags>Sass Build LibSass</tags>
+    <tags>Sass Build LibSass SassBuilder</tags>
     <projectUrl>https://github.com/johan-v-r/LibSassBuilder</projectUrl>
+    <repository type="git" url="https://github.com/johan-v-r/LibSassBuilder.git"></repository>
     <license type="expression">MIT</license>
     <icon>sass.png</icon>
   </metadata>
