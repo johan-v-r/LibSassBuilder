@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "LibSassBuilder": {
+      "commandName": "Project",
+      "commandLineArgs": "../../../../LibSassBuilder.Tests"
+    }
+  }
+}
