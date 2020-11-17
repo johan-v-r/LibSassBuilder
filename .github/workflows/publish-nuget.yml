@@ -1,9 +1,11 @@
 name: Publish
 
 on:
+  workflow_dispatch:
   push:
     branches: [ main ]
-    paths: './package/LibSassBuilder.nuspec'
+    paths: 
+    - './package/LibSassBuilder.nuspec'
 
 jobs:
   build:
