@@ -43,5 +43,4 @@ jobs:
         #nuget-api-key-source: # optional
     
     - name: NuGet pack
-      run: nuget pack LibSassBuilder.nuspec
-      working-directory: '../package'
+      run: nuget pack './package/LibSassBuilder.nuspec'
