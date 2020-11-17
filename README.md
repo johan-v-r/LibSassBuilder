@@ -8,6 +8,12 @@
 
 No configuration is required, it will compile the files implicitly on project build.
 
+> Files in the following directories are excluded by default:
+> - `bin`
+> - `obj`
+> - `logs`
+> - `node_modules`
+
 ___
 
 ## Requirements
