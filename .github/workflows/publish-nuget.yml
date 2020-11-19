@@ -5,7 +5,7 @@ on:
   push:
     branches: [ main ]
     paths: 
-    - './package/LibSassBuilder.nuspec'
+    - 'package/LibSassBuilder.nuspec'
 
 jobs:
   build:
