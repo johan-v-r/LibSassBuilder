@@ -20,7 +20,7 @@
   </ItemGroup>
 
 	<Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-		<Exec Command="dotnet run --project ..\LibSassBuilder" />
+		<Exec Command="dotnet run --project ../LibSassBuilder" />
 	</Target>
 
 </Project>
