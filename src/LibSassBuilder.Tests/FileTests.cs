@@ -3,7 +3,7 @@ using Xunit;
 
 namespace LibSassBuilder.Tests
 {
-	// This project is configured to run LibSassBuilder in LibSassBuilder.Tests.csproj
+	// This project is configured to run LibSassBuilder in LibSassBuilder.Tests.csproj 
 	public class FileTests
 	{
 		private readonly string _fileDirectory;
