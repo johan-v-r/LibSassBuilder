@@ -1,10 +1,10 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <!-- https://natemcmaster.com/blog/2017/11/11/build-tools-in-nuget/ -->
   <PropertyGroup>
-    <SassExe Condition=" '$(SassExe)'=='' ">$(MSBuildThisFileDirectory)..\tool\LibSassBuilder.exe</SassExe>
+    <SassExe Condition=" '$(SassExe)'=='' ">$(MSBuildThisFileDirectory)../tool/LibSassBuilder.dll</SassExe>
   </PropertyGroup>
 
   <Target Name="SassBuild" BeforeTargets="PreBuildEvent">
-    <Exec Command="&quot;$(SassExe)&quot;" />
+    <Exec Command="dotnet &quot;$(SassExe)&quot;" />
   </Target>
 </Project>
