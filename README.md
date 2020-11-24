@@ -20,4 +20,11 @@ ___
 
 `LibSassBuilder` can be installed on any project, however the underlying build tool requires [.NET 5](https://dotnet.microsoft.com/download/dotnet/5.0) installed on the machine.
 
-It's currently only built with support for **Win x64** - but this can be extended on request.
+## Support
+
+The support is largely dependant on [LibSassHost](https://github.com/Taritsyn/LibSassHost)
+
+This tool contains the following supporting packages:
+- LibSassHost.Native.win-x64
+- LibSassHost.Native.linux-x64
+- LibSassHost.Native.osx-x64
