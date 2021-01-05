@@ -1,0 +1,36 @@
+name: Publish Tool
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+    paths: 
+    - 'src/LibSassBuilder/**'
+
+jobs:
+  build:
+
+    runs-on: windows-latest
+    defaults:
+      run:
+        working-directory: ./src
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '5.0.x'
+    - name: Install dependencies
+      run: dotnet restore
+    - name: Build
+      run: dotnet build --configuration Release --no-restore
+    - name: Test
+      run: dotnet test --no-restore --verbosity normal
+    - name: dotnet pack
+      run: dotnet pack LibSassBuilder -o 'nuget-tool-package'
+  
+    - uses: actions/upload-artifact@v2.2.1
+      with:
+        name: nuget-tool-package
+        path: './src/nuget-tool-package/*'
