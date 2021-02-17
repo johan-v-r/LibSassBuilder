@@ -39,6 +39,21 @@ ___
 
 `LibSassBuilder` can be installed on any project, however the underlying build tool requires [.NET 5](https://dotnet.microsoft.com/download/dotnet/5.0) installed on the machine.
 
+## Project options
+
+The project file can be tailored to specify what files should be processed by the sass processor:
+
+```xml
+<PropertyGroup>
+   <EnableDefaultSassItems>false</EnableDefaultSassItems>  <!-- take full-control -->
+   <DefaultSassExcludes>node_modules/**;lib/vendor/**</DefaultSassExcludes> <!-- exclude certain directories -->
+</PropertyGroup>
+
+<ItemGroup>
+  <SassFile Include="Styles/*.scss" /> <!-- add files manually -->
+</ItemGroup>
+```
+
 ## Bypass Visual Studio fast up to date check
 
 Visual studio does a quick check to find changed files. However if you edit the sass files, it does not see these as project changes.
@@ -49,7 +64,6 @@ If you edit sass files a lot you can instruct Visual Studio to rely on msbuild, 
     <DisableFastUpToDateCheck>true</DisableFastUpToDateCheck>
 </PropertyGroup>
 ```
-
 ## Support
 
 The support is largely dependant on [LibSassHost](https://github.com/Taritsyn/LibSassHost)
