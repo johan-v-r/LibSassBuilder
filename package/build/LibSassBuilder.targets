@@ -1,10 +1,63 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <!-- https://natemcmaster.com/blog/2017/11/11/build-tools-in-nuget/ -->
-  <PropertyGroup>
-    <SassExe Condition=" '$(SassExe)'=='' ">$(MSBuildThisFileDirectory)../tool/LibSassBuilder.dll</SassExe>
-  </PropertyGroup>
 
-  <Target Name="SassBuild" BeforeTargets="PreBuildEvent">
-    <Exec Command="dotnet &quot;$(SassExe)&quot;" />
+  <PropertyGroup>
+    <_LibSassBuilderHashCacheFile>$(IntermediateOutputPath)$(MSBuildProjectFile).LibSassBuilder.cache</_LibSassBuilderHashCacheFile>
+    <_LibSassBuilderListFile>$(IntermediateOutputPath)$(MSBuildProjectFile).LibSassBuilder.sass-list</_LibSassBuilderListFile>
+  </PropertyGroup>
+  
+  <Target Name="_LibSassBuilderCustomCollectWatchItems">
+    <ItemGroup>
+      <Watch Include="%(SassFile.FullPath)" Condition="'%(SassFile.Watch)' != 'false'" />
+    </ItemGroup>
+  </Target>
+
+  <Target Name="LibSassBuilderClean"
+          BeforeTargets="BeforeClean">
+    <Delete Files="$(_LibSassBuilderHashCacheFile)" />
+    <Delete Files="$(_LibSassBuilderListFile)" />
+  </Target>
+
+  <Target Name="LibSassBuilderBuild"        
+          BeforeTargets="BeforeBuild"  
+          Condition="'@(SassFile->Count())'!='0'">
+
+    <Message Text="Evaluating Sass files" Importance="$(LibSassBuilderMessageLevel)" />
+
+    <Hash ItemsToHash="@(SassFile->'%(FullPath)-%(ModifiedTime)')">
+      <Output TaskParameter="HashResult" PropertyName="LibSassBuilderDependencyHash" />
+    </Hash>
+
+    <ReadLinesFromFile
+        File="$(_LibSassBuilderHashCacheFile)"
+        Condition="Exists('$(_LibSassBuilderHashCacheFile)')">
+      <Output
+          TaskParameter="Lines"
+          ItemName="OldLibSassBuilderDependencyHash"/>
+    </ReadLinesFromFile>
+
+    <PropertyGroup>
+      <LibSassBuilderDependenciesChanged>false</LibSassBuilderDependenciesChanged>
+      <LibSassBuilderDependenciesChanged Condition=" '$(LibSassBuilderDependencyHash)' != '@(OldLibSassBuilderDependencyHash)' ">true</LibSassBuilderDependenciesChanged>
+    </PropertyGroup>
+    
+    <Message Text="Sass hash New = $(LibSassBuilderDependencyHash)" Importance="$(LibSassBuilderMessageLevel)" />
+    <Message Text="Sass hash Old = @(OldLibSassBuilderDependencyHash)" Importance="$(LibSassBuilderMessageLevel)" />
+    <Message Text="Sass changed  = $(LibSassBuilderDependenciesChanged)" Importance="$(LibSassBuilderMessageLevel)" />
+
+    <Delete Files="$(_LibSassBuilderListFile)"
+            Condition=" '$(LibSassBuilderDependenciesChanged)' == 'true' " />
+    <WriteLinesToFile File="$(_LibSassBuilderListFile)" 
+                      Lines="%(SassFile.FullPath)" 
+                      Overwrite="False" 
+                      Condition=" '$(LibSassBuilderDependenciesChanged)' == 'true' "/>
+
+    <Exec Command="dotnet &quot;$(SassExe)&quot; &quot;$(_LibSassBuilderListFile)&quot;" 
+          Condition=" '$(LibSassBuilderDependenciesChanged)' == 'true' "/>
+
+    <WriteLinesToFile File="$(_LibSassBuilderHashCacheFile)" 
+                      Lines="$(LibSassBuilderDependencyHash)" 
+                      Overwrite="True" 
+                      WriteOnlyWhenDifferent="True"
+                      Condition=" '$(LibSassBuilderDependenciesChanged)' == 'true' "/>
   </Target>
 </Project>

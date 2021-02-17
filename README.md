@@ -39,6 +39,17 @@ ___
 
 `LibSassBuilder` can be installed on any project, however the underlying build tool requires [.NET 5](https://dotnet.microsoft.com/download/dotnet/5.0) installed on the machine.
 
+## Bypass Visual Studio fast up to date check
+
+Visual studio does a quick check to find changed files. However if you edit the sass files, it does not see these as project changes.
+If you edit sass files a lot you can instruct Visual Studio to rely on msbuild, place the following property in your .csproj.
+
+```xml
+<PropertyGroup>
+    <DisableFastUpToDateCheck>true</DisableFastUpToDateCheck>
+</PropertyGroup>
+```
+
 ## Support
 
 The support is largely dependant on [LibSassHost](https://github.com/Taritsyn/LibSassHost)
@@ -47,3 +58,9 @@ This tool contains the following supporting packages:
 - LibSassHost.Native.win-x64
 - LibSassHost.Native.linux-x64
 - LibSassHost.Native.osx-x64
+
+## Package as nuget package
+
+```powershell
+./package.ps1 -PackageDir 'C:/LocalPackages' -Version '1.4.0.1'
+```

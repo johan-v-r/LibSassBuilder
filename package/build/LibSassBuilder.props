@@ -1,0 +1,22 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <!-- https://natemcmaster.com/blog/2017/11/11/build-tools-in-nuget/ -->
+  <PropertyGroup>
+    <SassExe Condition=" '$(SassExe)'=='' ">$(MSBuildThisFileDirectory)../tool/LibSassBuilder.dll</SassExe>
+    <LibSassBuilderMessageLevel Condition=" '$(LibSassBuilderMessageLevel)'=='' ">High</LibSassBuilderMessageLevel>
+
+    <EnableDefaultSassItems Condition="'$(EnableDefaultSassItems)'==''">true</EnableDefaultSassItems>
+    <DefaultSassExcludes>**/node_modules/**;node_modules/**;**/logs/**;logs/**</DefaultSassExcludes>
+
+    <!--
+    Target used by dotnet-watch to resolve additional items.
+    -->
+    <CustomCollectWatchItems>$(CustomCollectWatchItems);_LibSassBuilderCustomCollectWatchItems</CustomCollectWatchItems>
+  </PropertyGroup>
+  
+  <ItemGroup Condition="'$(EnableDefaultItems)' == 'true' And '$(EnableDefaultSassItems)' == 'true'">
+    <SassFile Include="**/*.scss" ExcludeFromSingleFile="true" CopyToPublishDirectory="PreserveNewest" Exclude="$(DefaultSassExcludes);$(DefaultExcludesInProjectFolder);" />
+    <SassFile Include="**/*.sass" ExcludeFromSingleFile="true" Exclude="$(DefaultSassExcludes);$(DefaultExcludesInProjectFolder)" />
+    <None Remove="**/*.scss" />
+    <None Remove="**/*.sass" />
+  </ItemGroup>
+</Project>

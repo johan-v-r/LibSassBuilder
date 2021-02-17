@@ -19,10 +19,38 @@ namespace LibSassBuilder
 
 		static async Task Main(string[] args)
 		{
-			var searchDirectory = args.Length > 0 ? args[0] : Directory.GetCurrentDirectory();
-			Console.WriteLine($"Sass compile directory: {searchDirectory}");
+			var locations = args.Length == 0
+				? new[] // When no argument is given, start at current directory
+				{
+					Directory.GetCurrentDirectory()
+				}
+				: args;
 
-			await CompileDirectoriesAsync(searchDirectory);
+			foreach (var location in locations) 
+			{
+				if (File.Exists(location))
+				{
+					if (location.EndsWith(".sass-list", StringComparison.OrdinalIgnoreCase))
+					{
+						Console.WriteLine($"Sass compile file-list: {location}");
+						var files = await File.ReadAllLinesAsync(location);
+						await CompileFilesAsync(files
+							.Where(l => !string.IsNullOrWhiteSpace(l))
+							.Select(l => l.Trim()));
+					}
+					else
+					{
+						Console.WriteLine($"Sass compile file: {location}");
+						await CompileFileAsync(new FileInfo(location));
+					}
+				}
+				else
+				{
+					Console.WriteLine($"Sass compile directory: {location}");
+
+					await CompileDirectoriesAsync(location);
+				}
+			}
 
 			Console.WriteLine("Sass files compiled");
 		}
@@ -49,16 +77,24 @@ namespace LibSassBuilder
 			foreach (var file in sassFiles)
 			{
 				var fileInfo = new FileInfo(file);
-				if (fileInfo.Name.StartsWith("_"))
-					continue;
+				await CompileFileAsync(fileInfo);
+			}
+		}
 
-				var result = SassCompiler.CompileFile(file, options: new CompilationOptions { OutputStyle = OutputStyle.Compressed });
+		static async Task CompileFileAsync(FileInfo file)
+		{
+			if (file.Name.StartsWith("_")) 
+			{
+				return;
+			}
 
-				var newFile = fileInfo.FullName.Replace(fileInfo.Extension, ".css");
+			var result = SassCompiler.CompileFile(file.FullName, options: new CompilationOptions { OutputStyle = OutputStyle.Compressed });
 
-				if (File.Exists(newFile) && result.CompiledContent == await File.ReadAllTextAsync(newFile))
-					continue;
+			var newFile = Path.ChangeExtension(file.FullName, ".css");
 
+			if (!File.Exists(newFile) ||
+				result.CompiledContent != await File.ReadAllTextAsync(newFile))
+			{
 				await File.WriteAllTextAsync(newFile, result.CompiledContent);
 			}
 		}
