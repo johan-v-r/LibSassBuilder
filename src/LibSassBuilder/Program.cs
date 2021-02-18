@@ -1,4 +1,5 @@
-﻿using LibSassHost;
+﻿using CommandLine;
+using LibSassHost;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -9,25 +10,29 @@ namespace LibSassBuilder
 {
 	class Program
 	{
-		private static readonly List<string> _excludedDirectories = new List<string>
-		{
-			"bin",
-			"obj",
-			"logs",
-			"node_modules"
-		};
-
 		static async Task Main(string[] args)
 		{
+			// default single arg used as directory
 			var searchDirectory = args.Length > 0 ? args[0] : Directory.GetCurrentDirectory();
+			var excludedDirectories = Options.DefaultExcludedDirectories;
+
+			// multiple args require parsing
+			if (args.Length > 1)
+				Parser.Default.ParseArguments<Options>(args)
+					.WithParsed(o =>
+					{
+						searchDirectory = o.Directory;
+						excludedDirectories = o.ExcludedDirectories;
+					});
+
 			Console.WriteLine($"Sass compile directory: {searchDirectory}");
 
-			await CompileDirectoriesAsync(searchDirectory);
+			await CompileDirectoriesAsync(searchDirectory, excludedDirectories);
 
 			Console.WriteLine("Sass files compiled");
 		}
 
-		static async Task CompileDirectoriesAsync(string directory)
+		static async Task CompileDirectoriesAsync(string directory, IEnumerable<string> excludedDirectories)
 		{
 			var sassFiles = Directory.EnumerateFiles(directory)
 				.Where(file => file.EndsWith(".scss", StringComparison.OrdinalIgnoreCase) || file.EndsWith(".sass", StringComparison.OrdinalIgnoreCase));
@@ -37,10 +42,10 @@ namespace LibSassBuilder
 			var subDirectories = Directory.EnumerateDirectories(directory);
 			foreach (var subDirectory in subDirectories)
 			{
-				if (_excludedDirectories.Any(dir => subDirectory.EndsWith(dir, StringComparison.OrdinalIgnoreCase)))
+				if (excludedDirectories.Any(dir => subDirectory.EndsWith(dir, StringComparison.OrdinalIgnoreCase)))
 					continue;
 
-				await CompileDirectoriesAsync(subDirectory);
+				await CompileDirectoriesAsync(subDirectory, excludedDirectories);
 			}
 		}
 
