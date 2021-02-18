@@ -6,11 +6,6 @@
 
     <EnableDefaultSassItems Condition="'$(EnableDefaultSassItems)'==''">true</EnableDefaultSassItems>
     <DefaultSassExcludes>**/node_modules/**;node_modules/**;**/logs/**;logs/**</DefaultSassExcludes>
-
-    <!--
-    Target used by dotnet-watch to resolve additional items.
-    -->
-    <CustomCollectWatchItems>$(CustomCollectWatchItems);_LibSassBuilderCustomCollectWatchItems</CustomCollectWatchItems>
   </PropertyGroup>
   
   <ItemGroup Condition="'$(EnableDefaultItems)' == 'true' And '$(EnableDefaultSassItems)' == 'true'">

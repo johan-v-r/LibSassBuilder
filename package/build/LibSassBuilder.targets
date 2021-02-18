@@ -2,23 +2,39 @@
 
   <PropertyGroup>
     <_LibSassBuilderHashCacheFile>$(IntermediateOutputPath)$(MSBuildProjectFile).LibSassBuilder.cache</_LibSassBuilderHashCacheFile>
-    <_LibSassBuilderListFile>$(IntermediateOutputPath)$(MSBuildProjectFile).LibSassBuilder.sass-list</_LibSassBuilderListFile>
+    <LibSassShouldBuild>false</LibSassShouldBuild>
   </PropertyGroup>
   
-  <Target Name="_LibSassBuilderCustomCollectWatchItems">
+<!--
+  Target used by dotnet-watch to resolve additional items.
+  Add target to CustomCollectWatchItems
+-->
+  <PropertyGroup>
+    <CustomCollectWatchItems>$(CustomCollectWatchItems);_LibSass_CustomCollectWatchItems</CustomCollectWatchItems>
+  </PropertyGroup>  
+  <Target Name="_LibSass_CustomCollectWatchItems">
     <ItemGroup>
       <Watch Include="%(SassFile.FullPath)" Condition="'%(SassFile.Watch)' != 'false'" />
     </ItemGroup>
   </Target>
 
-  <Target Name="LibSassBuilderClean"
+<!--
+  Target to clean temporary output
+  Deletes the hash file, consider deleting the generated .css files? Scary...
+-->
+  <Target Name="LibSass_Clean"
           BeforeTargets="BeforeClean">
     <Delete Files="$(_LibSassBuilderHashCacheFile)" />
-    <Delete Files="$(_LibSassBuilderListFile)" />
   </Target>
 
-  <Target Name="LibSassBuilderBuild"        
-          BeforeTargets="BeforeBuild"  
+<!--
+  This target calculates the hash of all files (only filename & modification timestamp, so no disk access is needed)
+  Outputs:
+     LibSassShouldBuild = true if hash has changed
+     LibSassBuilderDependencyHash the new hash
+-->
+  <Target Name="LibSass_DetermineBuildNeeded"        
+          BeforeTargets="LibSass_Build"  
           Condition="'@(SassFile->Count())'!='0'">
 
     <Message Text="Evaluating Sass files" Importance="$(LibSassBuilderMessageLevel)" />
@@ -36,28 +52,40 @@
     </ReadLinesFromFile>
 
     <PropertyGroup>
-      <LibSassBuilderDependenciesChanged>false</LibSassBuilderDependenciesChanged>
-      <LibSassBuilderDependenciesChanged Condition=" '$(LibSassBuilderDependencyHash)' != '@(OldLibSassBuilderDependencyHash)' ">true</LibSassBuilderDependenciesChanged>
+      <LibSassShouldBuild Condition=" '$(LibSassBuilderDependencyHash)' != '@(OldLibSassBuilderDependencyHash)' ">true</LibSassShouldBuild>
     </PropertyGroup>
     
     <Message Text="Sass hash New = $(LibSassBuilderDependencyHash)" Importance="$(LibSassBuilderMessageLevel)" />
     <Message Text="Sass hash Old = @(OldLibSassBuilderDependencyHash)" Importance="$(LibSassBuilderMessageLevel)" />
-    <Message Text="Sass changed  = $(LibSassBuilderDependenciesChanged)" Importance="$(LibSassBuilderMessageLevel)" />
+    <Message Text="Sass changed  = $(LibSassShouldBuild)" Importance="$(LibSassBuilderMessageLevel)" />
+  </Target>
+  
+<!-- 
+  Invokes the sass tool
+-->
+  <Target Name="LibSass_Build" 
+          BeforeTargets="BeforeBuild"  
+          Condition="'$(LibSassShouldBuild)' == 'true'">
+    <PropertyGroup>
+      <_SassFileList>@(SassFile->'&quot;%(FullPath)&quot;', ' ')</_SassFileList> <!-- all files, space seperated, surrounded with quotes -->
+    </PropertyGroup>
+    <Message Text="$(_SassFileList)" Importance="High" />
 
-    <Delete Files="$(_LibSassBuilderListFile)"
-            Condition=" '$(LibSassBuilderDependenciesChanged)' == 'true' " />
-    <WriteLinesToFile File="$(_LibSassBuilderListFile)" 
-                      Lines="%(SassFile.FullPath)" 
-                      Overwrite="False" 
-                      Condition=" '$(LibSassBuilderDependenciesChanged)' == 'true' "/>
+    <Exec Command="dotnet &quot;$(SassExe)&quot; $(_SassFileList)"/>
+  </Target>
 
-    <Exec Command="dotnet &quot;$(SassExe)&quot; &quot;$(_LibSassBuilderListFile)&quot;" 
-          Condition=" '$(LibSassBuilderDependenciesChanged)' == 'true' "/>
+<!-- 
+  Save the hash to file if it had changed, do this after the build so it will not skip the next build on failures
+-->
+  <Target Name="LibSass_SaveNewHash"
+          AfterTargets="LibSass_Build"
+          BeforeTargets="BeforeBuild"  
+          Condition=" '$(LibSassShouldBuild)' == 'true' ">
+    <Message Text="Sass hash: saving new..." Importance="$(LibSassBuilderMessageLevel)" />
 
     <WriteLinesToFile File="$(_LibSassBuilderHashCacheFile)" 
                       Lines="$(LibSassBuilderDependencyHash)" 
                       Overwrite="True" 
-                      WriteOnlyWhenDifferent="True"
-                      Condition=" '$(LibSassBuilderDependenciesChanged)' == 'true' "/>
+                      WriteOnlyWhenDifferent="True" />
   </Target>
 </Project>
