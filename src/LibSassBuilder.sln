@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LibSassBuilder.Tests", "Lib
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibSassBuilder.DirectoryTests", "LibSassBuilder.DirectoryTests\LibSassBuilder.DirectoryTests.csproj", "{F51D398C-D259-4539-8EE4-E037B213F3C6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibSassBuilder.ExcludeTests", "LibSassBuilder.ExcludeTests\LibSassBuilder.ExcludeTests.csproj", "{16069D4E-516D-4DE6-A0E7-D2429E1F7485}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{F51D398C-D259-4539-8EE4-E037B213F3C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F51D398C-D259-4539-8EE4-E037B213F3C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F51D398C-D259-4539-8EE4-E037B213F3C6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{16069D4E-516D-4DE6-A0E7-D2429E1F7485}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{16069D4E-516D-4DE6-A0E7-D2429E1F7485}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{16069D4E-516D-4DE6-A0E7-D2429E1F7485}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{16069D4E-516D-4DE6-A0E7-D2429E1F7485}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
