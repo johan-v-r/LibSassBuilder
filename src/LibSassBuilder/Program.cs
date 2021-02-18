@@ -12,24 +12,16 @@ namespace LibSassBuilder
 	{
 		static async Task Main(string[] args)
 		{
-			// default single arg used as directory
-			var searchDirectory = args.Length > 0 ? args[0] : Directory.GetCurrentDirectory();
-			var excludedDirectories = Options.DefaultExcludedDirectories;
+			await Parser.Default.ParseArguments<Options>(args)
+				.WithNotParsed(e => Environment.Exit(1))
+				.WithParsedAsync(async o =>
+				{
+					Console.WriteLine($"Sass compile directory: {o.Directory}");
 
-			// multiple args require parsing
-			if (args.Length > 1)
-				Parser.Default.ParseArguments<Options>(args)
-					.WithParsed(o =>
-					{
-						searchDirectory = o.Directory;
-						excludedDirectories = o.ExcludedDirectories;
-					});
+					await CompileDirectoriesAsync(o.Directory, o.ExcludedDirectories);
 
-			Console.WriteLine($"Sass compile directory: {searchDirectory}");
-
-			await CompileDirectoriesAsync(searchDirectory, excludedDirectories);
-
-			Console.WriteLine("Sass files compiled");
+					Console.WriteLine("Sass files compiled");
+				});
 		}
 
 		static async Task CompileDirectoriesAsync(string directory, IEnumerable<string> excludedDirectories)

@@ -5,7 +5,9 @@ VisualStudioVersion = 16.0.30709.132
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LibSassBuilder", "LibSassBuilder\LibSassBuilder.csproj", "{0DB56568-9B61-47C7-9B3A-74AD4B3EEC9A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibSassBuilder.Tests", "LibSassBuilder.Tests\LibSassBuilder.Tests.csproj", "{6401A537-4B7B-42F8-A515-67240B4C0F0C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LibSassBuilder.Tests", "LibSassBuilder.Tests\LibSassBuilder.Tests.csproj", "{6401A537-4B7B-42F8-A515-67240B4C0F0C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibSassBuilder.DirectoryTests", "LibSassBuilder.DirectoryTests\LibSassBuilder.DirectoryTests.csproj", "{F51D398C-D259-4539-8EE4-E037B213F3C6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{6401A537-4B7B-42F8-A515-67240B4C0F0C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6401A537-4B7B-42F8-A515-67240B4C0F0C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6401A537-4B7B-42F8-A515-67240B4C0F0C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F51D398C-D259-4539-8EE4-E037B213F3C6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F51D398C-D259-4539-8EE4-E037B213F3C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F51D398C-D259-4539-8EE4-E037B213F3C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F51D398C-D259-4539-8EE4-E037B213F3C6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
