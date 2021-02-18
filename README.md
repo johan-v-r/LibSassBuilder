@@ -13,7 +13,14 @@ Build | NuGet Package | .NET Global Tool
 
 `LibSassBuilder` NuGet package adds a build task to compile Sass files to `.css`. It's compatible with both MSBuild (VS) and `dotnet build`.
 
-No configuration is required, it will compile the files implicitly on project build.  
+No configuration is required, it will compile the files implicitly on project build.
+
+Optionally provide arguments (see _Options_ below):
+```xml
+<PropertyGroup>
+  <LibSassBuilderArgs>.\Pages -e temp</LibSassBuilderArgs>
+</PropertyGroup>
+```
 
 ## [.NET Global Tool](https://www.nuget.org/packages/LibSassBuilder-Tool)  
 
@@ -24,14 +31,22 @@ dotnet tool install --global LibSassBuilder-Tool
 
 Use:
 ```
-lsb [optional-path]
+lsb [optional-path] [options]
+lsb --help
 ```
 
-> Files in the following directories are excluded by default:
-> - `bin`
-> - `obj`
-> - `logs`
-> - `node_modules`
+
+## Options 
+
+```
+  -e, --exclude    (Default: bin obj logs node_modules) Specify explicit directories to exclude. Overrides the default.
+
+  --help           Display this help screen.
+
+  --version        Display version information.
+
+  value pos. 0     Directory in which to run. Defaults to current directory.
+```
 
 ___
 
