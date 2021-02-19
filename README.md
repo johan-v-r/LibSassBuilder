@@ -16,6 +16,7 @@ Build | NuGet Package | .NET Global Tool
 No configuration is required, it will compile the files implicitly on project build.
 
 Optionally provide arguments (see _Options_ below):
+
 ```xml
 <PropertyGroup>
   <LibSassBuilderArgs>.\Pages -e temp</LibSassBuilderArgs>
@@ -32,11 +33,22 @@ dotnet tool install --global LibSassBuilder-Tool
 Use:
 ```
 lsb [optional-path] [options]
-lsb --help
+lsb help
+lsb help directory
+lsb help files
 ```
 
+## Generic options 
 
-## Options 
+ ```
+   -l, --level      Specify the level of output (silent, default, verbose)
+
+  --outputstyle    Specify the style of output (compressed, condensed, nested, expanded)
+```
+
+## Directory command (default)
+
+Scans a directory recursively to generate .css files
 
 ```
   -e, --exclude    (Default: bin obj logs node_modules) Specify explicit directories to exclude. Overrides the default.
@@ -48,6 +60,32 @@ lsb --help
   value pos. 0     Directory in which to run. Defaults to current directory.
 ```
 
+Example:
+
+```
+lsb directory
+lsb directory sources/styles -e node_modules
+lsb directory sources/styles -e node_modules -l verbose
+```
+
+## Files command (default)
+
+Processes the files given on the commandline
+
+```
+  --help           Display this help screen.
+
+  --version        Display version information.
+
+  value pos. 0     File(s) to process.
+```
+
+Example:
+
+```
+lsb files sources/style/a.scss sources/vendor/b.scss
+lsb files sources/style/a.scss sources/vendor/b.scss -l verbose
+```
 ___
 
 ## Requirements
