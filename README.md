@@ -16,6 +16,7 @@ Build | NuGet Package | .NET Global Tool
 No configuration is required, it will compile the files implicitly on project build.
 
 Optionally provide arguments (see _Options_ below):
+
 ```xml
 <PropertyGroup>
   <LibSassBuilderArgs>.\Pages -e temp</LibSassBuilderArgs>
@@ -76,7 +77,7 @@ Processes the files given on the commandline
 
   --version        Display version information.
 
-  value pos. 0     Directory in which to run. Defaults to current directory.
+  value pos. 0     File(s) to process.
 ```
 
 Example:
