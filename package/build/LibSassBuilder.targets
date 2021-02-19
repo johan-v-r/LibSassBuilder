@@ -1,5 +1,96 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Target Name="SassBuild" BeforeTargets="PreBuildEvent">
-    <Exec Command="dotnet &quot;$(SassExe)&quot; $(LibSassBuilderArgs)" />
+
+  <PropertyGroup>
+    <_LibSassHashCacheFile>$(IntermediateOutputPath)$(MSBuildProjectFile).LibSassBuilder.cache</_LibSassHashCacheFile>
+    <LibSassShouldBuild>false</LibSassShouldBuild>
+  </PropertyGroup>
+  
+<!--
+  Target used by dotnet-watch to resolve additional items.
+  Add target to CustomCollectWatchItems
+-->
+  <PropertyGroup>
+    <CustomCollectWatchItems>$(CustomCollectWatchItems);_LibSass_CustomCollectWatchItems</CustomCollectWatchItems>
+  </PropertyGroup>  
+  <Target Name="_LibSass_CustomCollectWatchItems">
+    <ItemGroup>
+      <Watch Include="%(SassFile.FullPath)" Condition="'%(SassFile.Watch)' != 'false'" />
+    </ItemGroup>
+  </Target>
+
+<!--
+  Target to clean temporary output
+  Deletes the hash file, consider deleting the generated .css files? Scary...
+-->
+  <Target Name="LibSass_Clean"
+          BeforeTargets="BeforeClean">
+    <Delete Files="$(_LibSassHashCacheFile)" />
+  </Target>
+
+<!--
+  This target calculates the hash of all files (only filename & modification timestamp, so no disk access is needed)
+  Outputs:
+     LibSassShouldBuild = true if hash has changed
+     LibSassBuilderDependencyHash the new hash
+-->
+  <Target Name="LibSass_DetermineBuildNeeded"  
+          BeforeTargets="BeforeBuild"  
+          Condition="'@(SassFile->Count())'!='0'">
+
+    <Message Text="Evaluating Sass files" Importance="$(LibSassMessageLevel)" />
+    <PropertyGroup>
+      <_LibSass_HashFiles>@(SassFile->'%(FullPath)-%(ModifiedTime)')</_LibSass_HashFiles>
+    </PropertyGroup>
+
+    <!-- calculate hash over files & over relevant settings -->
+    <Hash ItemsToHash="$(_LibSass_HashFiles)-$(LibSassOutputStyle)">
+      <Output TaskParameter="HashResult" PropertyName="LibSassBuilderDependencyHash" />
+    </Hash>
+
+    <ReadLinesFromFile
+        File="$(_LibSassHashCacheFile)"
+        Condition="Exists('$(_LibSassHashCacheFile)')">
+      <Output
+          TaskParameter="Lines"
+          ItemName="OldLibSassBuilderDependencyHash"/>
+    </ReadLinesFromFile>
+
+    <PropertyGroup>
+      <LibSassShouldBuild Condition=" '$(LibSassBuilderDependencyHash)' != '@(OldLibSassBuilderDependencyHash)' ">true</LibSassShouldBuild>
+    </PropertyGroup>
+    
+    <Message Text="Sass hash New = $(LibSassBuilderDependencyHash)" Importance="$(LibSassMessageLevel)" />
+    <Message Text="Sass hash Old = @(OldLibSassBuilderDependencyHash)" Importance="$(LibSassMessageLevel)" />
+    <Message Text="Sass changed  = $(LibSassShouldBuild)" Importance="$(LibSassMessageLevel)" />
+  </Target>
+  
+<!-- 
+  Invokes the sass tool
+-->
+  <Target Name="LibSass_Build" 
+          DependsOnTargets="LibSass_DetermineBuildNeeded"
+          BeforeTargets="BeforeBuild"  
+          Condition="'$(LibSassShouldBuild)' == 'true'">
+    <PropertyGroup>
+      <_SassFileList>@(SassFile->'&quot;%(FullPath)&quot;', ' ')</_SassFileList> <!-- all files, space seperated, surrounded with quotes -->
+    </PropertyGroup>
+    <Message Text="$(_SassFileList)" Importance="High" />
+
+    <Exec Command="dotnet &quot;$(SassExe)&quot; files $(_SassFileList) --outputstyle $(LibSassOutputStyle) --level $(LibSassOutputLevel)"/>
+  </Target>
+
+<!-- 
+  Save the hash to file if it had changed, do this after the build so it will not skip the next build on failures
+-->
+  <Target Name="LibSass_SaveNewHash"
+          AfterTargets="LibSass_Build"
+          BeforeTargets="BeforeBuild"  
+          Condition=" '$(LibSassShouldBuild)' == 'true' ">
+    <Message Text="Sass hash: saving new..." Importance="$(LibSassMessageLevel)" />
+
+    <WriteLinesToFile File="$(_LibSassHashCacheFile)" 
+                      Lines="$(LibSassBuilderDependencyHash)" 
+                      Overwrite="True" 
+                      WriteOnlyWhenDifferent="True" />
   </Target>
 </Project>

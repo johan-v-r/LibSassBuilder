@@ -18,8 +18,28 @@ No configuration is required, it will compile the files implicitly on project bu
 Optionally provide arguments (see _Options_ below):
 ```xml
 <PropertyGroup>
-  <LibSassBuilderArgs>.\Pages -e temp</LibSassBuilderArgs>
+  <!-- outputstyle option -->
+  <LibSassOutputStyle>compressed</LibSassOutputStyle>
+  <LibSassOutputStyle Condition="'$(Configuration)' == 'Debug'">expanded</LibSassOutputStyle>
+  <!-- level option -->
+  <LibSassOutputLevel>verbose</LibSassOutputLevel>
+  <!-- msbuild output level -->
+  <LibSassMessageLevel>High</LibSassMessageLevel>
 </PropertyGroup>
+```
+
+Or take control of what files to process
+```xml
+<PropertyGroup>
+  <!-- take full-control -->
+  <EnableDefaultSassItems>false</EnableDefaultSassItems>  
+</PropertyGroup>
+
+<ItemGroup>
+  <!-- add files manually -->
+  <SassFile Include="Vendor/**/*.scss" > 
+  <SassFile Include="Styles/**/*.scss" Exclude="Styles/unused/**" />
+</ItemGroup>
 ```
 
 ## [.NET Global Tool](https://www.nuget.org/packages/LibSassBuilder-Tool)  
@@ -31,26 +51,20 @@ dotnet tool install --global LibSassBuilder-Tool
 
 Use:
 ```
-lsb [optional-path] [options]
-lsb help
-lsb help directory
-lsb help files
+lsb [optional-path]
 ```
 
-## Generic options 
+> Files in the following directories are excluded by default:
+> - `bin`
+> - `obj`
+> - `logs`
+> - `node_modules`
 
- ```
-   -l, --level      Specify the level of output (silent, default, verbose)
+___
 
-  --outputstyle    Specify the style of output (compressed, condensed, nested, expanded)
-```
+## Requirements
 
-## Directory command (default)
-
-Scans a directory recursively to generate .css files
-
-```
-  -e, --exclude    (Default: bin obj logs node_modules) Specify explicit directories to exclude. Overrides the default.
+`LibSassBuilder` can be installed on any project, however the underlying build tool requires [.NET 5](https://dotnet.microsoft.com/download/dotnet/5.0) installed on the machine.
 
   --help           Display this help screen.
 
@@ -90,6 +104,31 @@ ___
 ## Requirements
 
 `LibSassBuilder` can be installed on any project, however the underlying build tool requires [.NET 5](https://dotnet.microsoft.com/download/dotnet/5.0) installed on the machine.
+## Project options
+
+The project file can be tailored to specify what files should be processed by the sass processor:
+
+```xml
+<PropertyGroup>
+   <EnableDefaultSassItems>false</EnableDefaultSassItems>  <!-- take full-control -->
+   <DefaultSassExcludes>node_modules/**;lib/vendor/**</DefaultSassExcludes> <!-- exclude certain directories -->
+</PropertyGroup>
+
+<ItemGroup>
+  <SassFile Include="Styles/*.scss" /> <!-- add files manually -->
+</ItemGroup>
+```
+
+## Bypass Visual Studio fast up to date check
+
+Visual studio does a quick check to find changed files. However if you edit the sass files, it does not see these as project changes.
+If you edit sass files a lot you can instruct Visual Studio to rely on msbuild, place the following property in your .csproj.
+
+```xml
+<PropertyGroup>
+    <DisableFastUpToDateCheck>true</DisableFastUpToDateCheck>
+</PropertyGroup>
+```
 
 ## Support
 
@@ -99,3 +138,9 @@ This tool contains the following supporting packages:
 - LibSassHost.Native.win-x64
 - LibSassHost.Native.linux-x64
 - LibSassHost.Native.osx-x64
+
+## Package as nuget package
+
+```powershell
+./package.ps1 -PackageDir 'C:/LocalPackages' -Version '1.4.0.1'
+```

@@ -2,6 +2,21 @@
   <!-- https://natemcmaster.com/blog/2017/11/11/build-tools-in-nuget/ -->
   <PropertyGroup>
     <SassExe Condition=" '$(SassExe)'=='' ">$(MSBuildThisFileDirectory)../tool/LibSassBuilder.dll</SassExe>
-    <LibSassBuilderArgs Condition=" '$(LibSassBuilderArgs)'=='' "></LibSassBuilderArgs>
+    <!-- outputstyle option for lsb (compressed, condensed, nested, expanded) --> 
+    <LibSassOutputStyle Condition=" '$(LibSassOutputStyle)'=='' ">compressed</LibSassOutputStyle> 
+    <!-- level option for lsb -->
+    <LibSassOutputLevel Condition=" '$(LibSassOutputLevel)'=='' ">default</LibSassOutputLevel> 
+    <!-- option for msbuild task output -->
+    <LibSassMessageLevel Condition=" '$(LibSassMessageLevel)'=='' ">Normal</LibSassMessageLevel>
+
+    <EnableDefaultSassItems Condition="'$(EnableDefaultSassItems)'==''">true</EnableDefaultSassItems>
+    <DefaultSassExcludes>**/node_modules/**;node_modules/**;**/logs/**;logs/**</DefaultSassExcludes>
   </PropertyGroup>
+  
+  <ItemGroup Condition="'$(EnableDefaultItems)' == 'true' And '$(EnableDefaultSassItems)' == 'true'">
+    <SassFile Include="**/*.scss" ExcludeFromSingleFile="true" CopyToPublishDirectory="PreserveNewest" Exclude="$(DefaultSassExcludes);$(DefaultExcludesInProjectFolder);" />
+    <SassFile Include="**/*.sass" ExcludeFromSingleFile="true" Exclude="$(DefaultSassExcludes);$(DefaultExcludesInProjectFolder)" />
+    <None Remove="**/*.scss" />
+    <None Remove="**/*.sass" />
+  </ItemGroup>
 </Project>
