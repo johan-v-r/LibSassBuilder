@@ -1,0 +1,7 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <!-- https://natemcmaster.com/blog/2017/11/11/build-tools-in-nuget/ -->
+  <PropertyGroup>
+    <SassExe Condition=" '$(SassExe)'=='' ">$(MSBuildThisFileDirectory)../tool/LibSassBuilder.dll</SassExe>
+    <LibSassBuilderArgs Condition=" '$(LibSassBuilderArgs)'=='' "></LibSassBuilderArgs>
+  </PropertyGroup>
+</Project>
