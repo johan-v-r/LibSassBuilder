@@ -7,9 +7,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LibSassBuilder", "LibSassBu
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LibSassBuilder.Tests", "LibSassBuilder.Tests\LibSassBuilder.Tests.csproj", "{6401A537-4B7B-42F8-A515-67240B4C0F0C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibSassBuilder.DirectoryTests", "LibSassBuilder.DirectoryTests\LibSassBuilder.DirectoryTests.csproj", "{F51D398C-D259-4539-8EE4-E037B213F3C6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LibSassBuilder.DirectoryTests", "LibSassBuilder.DirectoryTests\LibSassBuilder.DirectoryTests.csproj", "{F51D398C-D259-4539-8EE4-E037B213F3C6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibSassBuilder.ExcludeTests", "LibSassBuilder.ExcludeTests\LibSassBuilder.ExcludeTests.csproj", "{16069D4E-516D-4DE6-A0E7-D2429E1F7485}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LibSassBuilder.ExcludeTests", "LibSassBuilder.ExcludeTests\LibSassBuilder.ExcludeTests.csproj", "{16069D4E-516D-4DE6-A0E7-D2429E1F7485}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{9D63AEC3-CC7D-43C2-9501-5A00E9767C7D}"
+	ProjectSection(SolutionItems) = preProject
+		..\README.md = ..\README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

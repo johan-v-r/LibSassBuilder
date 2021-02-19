@@ -10,21 +10,56 @@ namespace LibSassBuilder
 {
 	class Program
 	{
-		static async Task Main(string[] args)
+        static async Task Main(string[] args)
 		{
-			await Parser.Default.ParseArguments<Options>(args)
+			var parser = new Parser(config =>
+			{
+				config.CaseInsensitiveEnumValues = true;
+				config.AutoHelp = true;
+				config.HelpWriter = Console.Out;
+			});
+
+			await parser.ParseArguments<DirectoryOptions, FilesOptions>(args)
 				.WithNotParsed(e => Environment.Exit(1))
 				.WithParsedAsync(async o =>
 				{
-					Console.WriteLine($"Sass compile directory: {o.Directory}");
+					switch (o)
+                    {
+						case DirectoryOptions directory:
+							{
+								var program = new Program(directory);
 
-					await CompileDirectoriesAsync(o.Directory, o.ExcludedDirectories);
+								program.WriteLine($"Sass compile directory: {directory.Directory}");
 
-					Console.WriteLine("Sass files compiled");
+								await program.CompileDirectoriesAsync(directory.Directory, directory.ExcludedDirectories);
+
+								program.WriteLine("Sass files compiled");
+							}
+							break;
+						case FilesOptions file:
+							{
+								var program = new Program(file);
+								program.WriteLine($"Sass compile files");
+
+								await program.CompileFilesAsync(file.Files);
+
+								program.WriteLine("Sass files compiled");
+							}
+							break;
+						default:
+							throw new NotImplementedException("Invalid commandline option parsing");
+					}
 				});
 		}
 
-		static async Task CompileDirectoriesAsync(string directory, IEnumerable<string> excludedDirectories)
+		public GenericOptions Options { get; }
+
+		public Program(GenericOptions options)
+        {
+            Options = options;
+        }
+
+		async Task CompileDirectoriesAsync(string directory, IEnumerable<string> excludedDirectories)
 		{
 			var sassFiles = Directory.EnumerateFiles(directory)
 				.Where(file => file.EndsWith(".scss", StringComparison.OrdinalIgnoreCase) || file.EndsWith(".sass", StringComparison.OrdinalIgnoreCase));
@@ -41,7 +76,7 @@ namespace LibSassBuilder
 			}
 		}
 
-		static async Task CompileFilesAsync(IEnumerable<string> sassFiles)
+		async Task CompileFilesAsync(IEnumerable<string> sassFiles)
 		{
 			foreach (var file in sassFiles)
 			{
@@ -49,7 +84,9 @@ namespace LibSassBuilder
 				if (fileInfo.Name.StartsWith("_"))
 					continue;
 
-				var result = SassCompiler.CompileFile(file, options: new CompilationOptions { OutputStyle = OutputStyle.Compressed });
+				WriteVerbose($"Processing: {fileInfo.FullName}");
+
+				var result = SassCompiler.CompileFile(file, options: Options.SassCompilationOptions);
 
 				var newFile = fileInfo.FullName.Replace(fileInfo.Extension, ".css");
 
@@ -57,6 +94,22 @@ namespace LibSassBuilder
 					continue;
 
 				await File.WriteAllTextAsync(newFile, result.CompiledContent);
+			}
+		}
+
+		void WriteLine(string line)
+		{
+			if (Options.OutputLevel >= OutputLevel.Default)
+			{
+				Console.WriteLine(line);
+			}
+		}
+
+		void WriteVerbose(string line)
+		{
+			if (Options.OutputLevel >= OutputLevel.Verbose)
+			{
+				Console.WriteLine(line);
 			}
 		}
 	}
