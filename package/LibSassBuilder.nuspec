@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<package >
+<package>
   <metadata>
     <id>LibSassBuilder</id>
     <version>1.5.0</version>
@@ -11,7 +11,8 @@
     <description>Compile Sass files to css on project build.</description>
     <tags>Sass Build LibSass SassBuilder</tags>
     <projectUrl>https://github.com/johan-v-r/LibSassBuilder</projectUrl>
-    <repository type="git" url="https://github.com/johan-v-r/LibSassBuilder.git"></repository>
+    <repository type="git" url="https://github.com/johan-v-r/LibSassBuilder.git">
+    </repository>
     <license type="expression">MIT</license>
     <icon>sass.png</icon>
   </metadata>
