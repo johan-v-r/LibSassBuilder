@@ -51,20 +51,26 @@ dotnet tool install --global LibSassBuilder-Tool
 
 Use:
 ```
-lsb [optional-path]
+lsb [optional-path] [options]
+lsb help
+lsb help directory
+lsb help files
 ```
 
-> Files in the following directories are excluded by default:
-> - `bin`
-> - `obj`
-> - `logs`
-> - `node_modules`
+## Generic options 
 
-___
+ ```
+   -l, --level      Specify the level of output (silent, default, verbose)
 
-## Requirements
+  --outputstyle    Specify the style of output (compressed, condensed, nested, expanded)
+```
 
-`LibSassBuilder` can be installed on any project, however the underlying build tool requires [.NET 5](https://dotnet.microsoft.com/download/dotnet/5.0) installed on the machine.
+## Directory command (default)
+
+Scans a directory recursively to generate .css files
+
+```
+  -e, --exclude    (Default: bin obj logs node_modules) Specify explicit directories to exclude. Overrides the default.
 
   --help           Display this help screen.
 
@@ -80,6 +86,13 @@ lsb directory
 lsb directory sources/styles -e node_modules
 lsb directory sources/styles -e node_modules -l verbose
 ```
+
+Files in the following directories are excluded by default:
+ - `bin`
+ - `obj`
+ - `logs`
+ - `node_modules`
+
 
 ## Files command (default)
 
@@ -104,20 +117,6 @@ ___
 ## Requirements
 
 `LibSassBuilder` can be installed on any project, however the underlying build tool requires [.NET 5](https://dotnet.microsoft.com/download/dotnet/5.0) installed on the machine.
-## Project options
-
-The project file can be tailored to specify what files should be processed by the sass processor:
-
-```xml
-<PropertyGroup>
-   <EnableDefaultSassItems>false</EnableDefaultSassItems>  <!-- take full-control -->
-   <DefaultSassExcludes>node_modules/**;lib/vendor/**</DefaultSassExcludes> <!-- exclude certain directories -->
-</PropertyGroup>
-
-<ItemGroup>
-  <SassFile Include="Styles/*.scss" /> <!-- add files manually -->
-</ItemGroup>
-```
 
 ## Bypass Visual Studio fast up to date check
 
