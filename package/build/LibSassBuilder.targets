@@ -2,7 +2,9 @@
 
   <PropertyGroup>
     <_LibSassHashCacheFile>$(IntermediateOutputPath)$(MSBuildProjectFile).LibSassBuilder.cache</_LibSassHashCacheFile>
-    <LibSassShouldBuild>false</LibSassShouldBuild>
+    <_LibSassHashChanged>false</_LibSassHashChanged>
+    <LibSassShouldBuildBasedOnSassFiles>false</LibSassShouldBuildBasedOnSassFiles>
+    <LibSassShouldBuildBasedOnSassFiles Condition=" '$(LibSassBuilderArgs)'=='' ">true</LibSassShouldBuildBasedOnSassFiles>
   </PropertyGroup>
   
 <!--
@@ -12,7 +14,8 @@
   <PropertyGroup>
     <CustomCollectWatchItems>$(CustomCollectWatchItems);_LibSass_CustomCollectWatchItems</CustomCollectWatchItems>
   </PropertyGroup>  
-  <Target Name="_LibSass_CustomCollectWatchItems">
+  <Target Name="_LibSass_CustomCollectWatchItems"
+          Condition=" '$(LibSassShouldBuildBasedOnSassFiles)'=='true' ">
     <ItemGroup>
       <Watch Include="%(SassFile.FullPath)" Condition="'%(SassFile.Watch)' != 'false'" />
     </ItemGroup>
@@ -23,19 +26,20 @@
   Deletes the hash file, consider deleting the generated .css files? Scary...
 -->
   <Target Name="LibSass_Clean"
-          BeforeTargets="BeforeClean">
+          BeforeTargets="BeforeClean"
+          Condition=" '$(LibSassShouldBuildBasedOnSassFiles)'=='true' ">
     <Delete Files="$(_LibSassHashCacheFile)" />
   </Target>
 
 <!--
   This target calculates the hash of all files (only filename & modification timestamp, so no disk access is needed)
   Outputs:
-     LibSassShouldBuild = true if hash has changed
+     LibSassShouldBuildBasedOnSassFiles = true if hash has changed
      LibSassBuilderDependencyHash the new hash
 -->
   <Target Name="LibSass_DetermineBuildNeeded"  
           BeforeTargets="BeforeBuild"  
-          Condition="'@(SassFile->Count())'!='0'">
+          Condition="'@(SassFile->Count())'!='0' and '$(LibSassShouldBuildBasedOnSassFiles)'=='true' ">
 
     <Message Text="Evaluating Sass files" Importance="$(LibSassMessageLevel)" />
     <PropertyGroup>
@@ -56,27 +60,38 @@
     </ReadLinesFromFile>
 
     <PropertyGroup>
-      <LibSassShouldBuild Condition=" '$(LibSassBuilderDependencyHash)' != '@(OldLibSassBuilderDependencyHash)' ">true</LibSassShouldBuild>
+      <_LibSassHashChanged Condition=" '$(LibSassBuilderDependencyHash)' != '@(OldLibSassBuilderDependencyHash)' ">true</_LibSassHashChanged>
     </PropertyGroup>
     
     <Message Text="Sass hash New = $(LibSassBuilderDependencyHash)" Importance="$(LibSassMessageLevel)" />
     <Message Text="Sass hash Old = @(OldLibSassBuilderDependencyHash)" Importance="$(LibSassMessageLevel)" />
-    <Message Text="Sass changed  = $(LibSassShouldBuild)" Importance="$(LibSassMessageLevel)" />
+    <Message Text="Sass changed  = $(_LibSassHashChanged)" Importance="$(LibSassMessageLevel)" />
+  </Target>
+  
+<!-- 
+  Determines LibSassBuilderArgs based on the SassFile-items
+-->
+  <Target Name="LibSass_BuildArgsFromFileList" 
+          DependsOnTargets="LibSass_DetermineBuildNeeded"
+          BeforeTargets="BeforeBuild"  
+          Condition="'$(_LibSassHashChanged)-$(LibSassShouldBuildBasedOnSassFiles)' == 'true-true' ">
+    <PropertyGroup>
+      <_SassFileList>@(SassFile->'&quot;%(FullPath)&quot;', ' ')</_SassFileList> <!-- all files, space seperated, surrounded with quotes -->
+      <LibSassBuilderArgs>files $(_SassFileList) --outputstyle $(LibSassOutputStyle) --level $(LibSassOutputLevel)</LibSassBuilderArgs>
+    </PropertyGroup>
+    <Message Text="Converted SassFile list to argument" Importance="$(LibSassMessageLevel)" />
   </Target>
   
 <!-- 
   Invokes the sass tool
 -->
   <Target Name="LibSass_Build" 
-          DependsOnTargets="LibSass_DetermineBuildNeeded"
+          DependsOnTargets="LibSass_BuildArgsFromFileList"
           BeforeTargets="BeforeBuild"  
-          Condition="'$(LibSassShouldBuild)' == 'true'">
-    <PropertyGroup>
-      <_SassFileList>@(SassFile->'&quot;%(FullPath)&quot;', ' ')</_SassFileList> <!-- all files, space seperated, surrounded with quotes -->
-    </PropertyGroup>
-    <Message Text="$(_SassFileList)" Importance="High" />
+          Condition="'$(LibSassBuilderArgs)' != ''  ">
+    <Message Text="Invoking sass preprocessor..." Importance="$(LibSassMessageLevel)" />
 
-    <Exec Command="dotnet &quot;$(SassExe)&quot; files $(_SassFileList) --outputstyle $(LibSassOutputStyle) --level $(LibSassOutputLevel)"/>
+    <Exec Command="dotnet &quot;$(SassExe)&quot; $(LibSassBuilderArgs) "/>
   </Target>
 
 <!-- 
@@ -85,7 +100,7 @@
   <Target Name="LibSass_SaveNewHash"
           AfterTargets="LibSass_Build"
           BeforeTargets="BeforeBuild"  
-          Condition=" '$(LibSassShouldBuild)' == 'true' ">
+          Condition=" '$(_LibSassHashChanged)' == 'true' ">
     <Message Text="Sass hash: saving new..." Importance="$(LibSassMessageLevel)" />
 
     <WriteLinesToFile File="$(_LibSassHashCacheFile)" 

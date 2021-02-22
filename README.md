@@ -15,7 +15,7 @@ Build | NuGet Package | .NET Global Tool
 
 No configuration is required, it will compile the files implicitly on project build.
 
-Optionally provide arguments (see _Options_ below):
+### Optionally provide arguments (see _Options_ below):
 
 ```xml
 <PropertyGroup>
@@ -29,7 +29,8 @@ Optionally provide arguments (see _Options_ below):
 </PropertyGroup>
 ```
 
-Or take control of what files to process
+### Or take control of what files to process
+
 ```xml
 <PropertyGroup>
   <!-- take full-control -->
@@ -41,6 +42,17 @@ Or take control of what files to process
   <SassFile Include="Vendor/**/*.scss" > 
   <SassFile Include="Styles/**/*.scss" Exclude="Styles/unused/**" />
 </ItemGroup>
+```
+
+### Or ignore all previous options (except for LibSassMessageLevel) and determine the arguements to the tool yourself
+
+```xml
+<PropertyGroup>
+  <!-- Take even more full-control -->
+  <LibSassBuilderArgs>directory "$(MSBuildProjectDirectory)"</LibSassBuilderArgs>
+  <!-- msbuild output level -->
+  <LibSassMessageLevel>High</LibSassMessageLevel>
+</PropertyGroup>
 ```
 
 ## [.NET Global Tool](https://www.nuget.org/packages/LibSassBuilder-Tool)  

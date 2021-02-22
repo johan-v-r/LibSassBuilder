@@ -11,6 +11,9 @@
 
     <EnableDefaultSassItems Condition="'$(EnableDefaultSassItems)'==''">true</EnableDefaultSassItems>
     <DefaultSassExcludes>**/node_modules/**;node_modules/**;**/logs/**;logs/**</DefaultSassExcludes>
+
+    <!-- Provide LibSassBuilderArgs to take complete control -->
+    <LibSassBuilderArgs Condition=" '$(LibSassBuilderArgs)'=='' "></LibSassBuilderArgs>
   </PropertyGroup>
   
   <ItemGroup Condition="'$(EnableDefaultItems)' == 'true' And '$(EnableDefaultSassItems)' == 'true'">
