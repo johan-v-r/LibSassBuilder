@@ -15,7 +15,7 @@ Build | NuGet Package | .NET Global Tool
 
 No configuration is required, it will compile the files implicitly on project build.
 
-### Optionally provide arguments (see _Options_ below):
+- ### Optionally provide arguments (see _Options_ below):
 
 ```xml
 <PropertyGroup>
@@ -29,7 +29,7 @@ No configuration is required, it will compile the files implicitly on project bu
 </PropertyGroup>
 ```
 
-### Or take control of what files to process
+- ### Or take control of what files to process
 
 ```xml
 <PropertyGroup>
@@ -44,7 +44,7 @@ No configuration is required, it will compile the files implicitly on project bu
 </ItemGroup>
 ```
 
-### Or ignore all previous options (except for LibSassMessageLevel) and determine the arguements to the tool yourself
+- ### Or ignore all previous options (except for `<LibSassMessageLevel>`) and determine the arguments to the tool yourself
 
 ```xml
 <PropertyGroup>
@@ -55,6 +55,7 @@ No configuration is required, it will compile the files implicitly on project bu
 </PropertyGroup>
 ```
 
+___
 ## [.NET Global Tool](https://www.nuget.org/packages/LibSassBuilder-Tool)  
 
 Install:
@@ -73,9 +74,9 @@ lsb help files
 ## Generic options 
 
  ```
-   -l, --level      Specify the level of output (silent, default, verbose)
+-l, --level      Specify the level of output (silent, default, verbose)
 
-  --outputstyle    Specify the style of output (compressed, condensed, nested, expanded)
+--outputstyle    Specify the style of output (compressed, condensed, nested, expanded)
 ```
 
 ## Directory command (default)
@@ -83,13 +84,13 @@ lsb help files
 Scans a directory recursively to generate .css files
 
 ```
-  -e, --exclude    (Default: bin obj logs node_modules) Specify explicit directories to exclude. Overrides the default.
+-e, --exclude    (Default: bin obj logs node_modules) Specify explicit directories to exclude. Overrides the default.
 
-  --help           Display this help screen.
+--help           Display this help screen.
 
-  --version        Display version information.
+--version        Display version information.
 
-  value pos. 0     Directory in which to run. Defaults to current directory.
+value pos. 0     Directory in which to run. Defaults to current directory.
 ```
 
 Example:
@@ -112,11 +113,11 @@ Files in the following directories are excluded by default:
 Processes the files given on the commandline
 
 ```
-  --help           Display this help screen.
+--help           Display this help screen.
 
-  --version        Display version information.
+--version        Display version information.
 
-  value pos. 0     File(s) to process.
+value pos. 0     File(s) to process.
 ```
 
 Example:
@@ -127,20 +128,24 @@ lsb files sources/style/a.scss sources/vendor/b.scss -l verbose
 ```
 ___
 
-## Requirements
-
-`LibSassBuilder` can be installed on any project, however the underlying build tool requires [.NET 5](https://dotnet.microsoft.com/download/dotnet/5.0) installed on the machine.
 
 ## Bypass Visual Studio fast up to date check
 
-Visual studio does a quick check to find changed files. However if you edit the sass files, it does not see these as project changes.
-If you edit sass files a lot you can instruct Visual Studio to rely on msbuild, place the following property in your .csproj.
+Visual Studio does a quick check to find changed files. However if you edit the sass files, it does not see these as project changes.  
+If you edit sass files a lot, you can instruct Visual Studio to rely on MSBuild by placing the following property in your `.csproj`.
 
 ```xml
 <PropertyGroup>
     <DisableFastUpToDateCheck>true</DisableFastUpToDateCheck>
 </PropertyGroup>
 ```
+
+> The NuGet package also includes the [custom files list to watch](https://docs.microsoft.com/en-us/aspnet/core/tutorials/dotnet-watch?view=aspnetcore-5.0#customize-files-list-to-watch) to track sass files with `dotnet watch` by default.
+___
+
+## Requirements
+
+`LibSassBuilder` can be installed on any project, however the underlying build tool requires [.NET 5](https://dotnet.microsoft.com/download/dotnet/5.0) installed on the machine.
 
 ## Support
 
