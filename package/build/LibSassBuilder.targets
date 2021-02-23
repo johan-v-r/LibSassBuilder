@@ -11,11 +11,7 @@
   Target used by dotnet-watch to resolve additional items.
   Add target to CustomCollectWatchItems
 -->
-  <PropertyGroup>
-    <CustomCollectWatchItems>$(CustomCollectWatchItems);_LibSass_CustomCollectWatchItems</CustomCollectWatchItems>
-  </PropertyGroup>  
-  <Target Name="_LibSass_CustomCollectWatchItems"
-          Condition=" '$(LibSassShouldBuildBasedOnSassFiles)'=='true' ">
+  <Target Name="_LibSass_CustomCollectWatchItems">
     <ItemGroup>
       <Watch Include="%(SassFile.FullPath)" Condition="'%(SassFile.Watch)' != 'false'" />
     </ItemGroup>

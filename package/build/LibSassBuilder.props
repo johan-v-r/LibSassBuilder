@@ -14,6 +14,9 @@
 
     <!-- Provide LibSassBuilderArgs to take complete control -->
     <LibSassBuilderArgs Condition=" '$(LibSassBuilderArgs)'=='' "></LibSassBuilderArgs>
+    
+    <!-- Add target to CustomCollectWatchItems -->
+    <CustomCollectWatchItems>$(CustomCollectWatchItems);_LibSass_CustomCollectWatchItems</CustomCollectWatchItems>
   </PropertyGroup>
   
   <ItemGroup Condition="'$(EnableDefaultItems)' == 'true' And '$(EnableDefaultSassItems)' == 'true'">
