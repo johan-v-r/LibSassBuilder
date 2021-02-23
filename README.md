@@ -15,11 +15,43 @@ Build | NuGet Package | .NET Global Tool
 
 No configuration is required, it will compile the files implicitly on project build.
 
-Optionally provide arguments (see _Options_ below):
+### Optionally provide arguments (see _Options_ below):
 
 ```xml
 <PropertyGroup>
-  <LibSassBuilderArgs>.\Pages -e temp</LibSassBuilderArgs>
+  <!-- outputstyle option -->
+  <LibSassOutputStyle>compressed</LibSassOutputStyle>
+  <LibSassOutputStyle Condition="'$(Configuration)' == 'Debug'">expanded</LibSassOutputStyle>
+  <!-- level option -->
+  <LibSassOutputLevel>verbose</LibSassOutputLevel>
+  <!-- msbuild output level -->
+  <LibSassMessageLevel>High</LibSassMessageLevel>
+</PropertyGroup>
+```
+
+### Or take control of what files to process
+
+```xml
+<PropertyGroup>
+  <!-- take full-control -->
+  <EnableDefaultSassItems>false</EnableDefaultSassItems>  
+</PropertyGroup>
+
+<ItemGroup>
+  <!-- add files manually -->
+  <SassFile Include="Vendor/**/*.scss" > 
+  <SassFile Include="Styles/**/*.scss" Exclude="Styles/unused/**" />
+</ItemGroup>
+```
+
+### Or ignore all previous options (except for LibSassMessageLevel) and determine the arguements to the tool yourself
+
+```xml
+<PropertyGroup>
+  <!-- Take even more full-control -->
+  <LibSassBuilderArgs>directory "$(MSBuildProjectDirectory)"</LibSassBuilderArgs>
+  <!-- msbuild output level -->
+  <LibSassMessageLevel>High</LibSassMessageLevel>
 </PropertyGroup>
 ```
 
@@ -68,6 +100,13 @@ lsb directory sources/styles -e node_modules
 lsb directory sources/styles -e node_modules -l verbose
 ```
 
+Files in the following directories are excluded by default:
+ - `bin`
+ - `obj`
+ - `logs`
+ - `node_modules`
+
+
 ## Files command (default)
 
 Processes the files given on the commandline
@@ -92,6 +131,17 @@ ___
 
 `LibSassBuilder` can be installed on any project, however the underlying build tool requires [.NET 5](https://dotnet.microsoft.com/download/dotnet/5.0) installed on the machine.
 
+## Bypass Visual Studio fast up to date check
+
+Visual studio does a quick check to find changed files. However if you edit the sass files, it does not see these as project changes.
+If you edit sass files a lot you can instruct Visual Studio to rely on msbuild, place the following property in your .csproj.
+
+```xml
+<PropertyGroup>
+    <DisableFastUpToDateCheck>true</DisableFastUpToDateCheck>
+</PropertyGroup>
+```
+
 ## Support
 
 The support is largely dependant on [LibSassHost](https://github.com/Taritsyn/LibSassHost)
@@ -100,3 +150,9 @@ This tool contains the following supporting packages:
 - LibSassHost.Native.win-x64
 - LibSassHost.Native.linux-x64
 - LibSassHost.Native.osx-x64
+
+## Package as nuget package
+
+```powershell
+./package.ps1 -PackageDir 'C:/LocalPackages' -Version '1.4.0.1'
+```
