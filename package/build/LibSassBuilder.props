@@ -10,7 +10,7 @@
     <LibSassMessageLevel Condition=" '$(LibSassMessageLevel)'=='' ">Normal</LibSassMessageLevel>
 
     <EnableDefaultSassItems Condition="'$(EnableDefaultSassItems)'==''">true</EnableDefaultSassItems>
-    <DefaultSassExcludes>**/node_modules/**;node_modules/**;**/logs/**;logs/**</DefaultSassExcludes>
+    <DefaultSassExcludes>**/bin/**;**/obj/**;**/node_modules/**;**/logs/**</DefaultSassExcludes>
 
     <!-- Provide LibSassBuilderArgs to take complete control -->
     <LibSassBuilderArgs Condition=" '$(LibSassBuilderArgs)'=='' "></LibSassBuilderArgs>
@@ -20,8 +20,8 @@
   </PropertyGroup>
   
   <ItemGroup Condition="'$(EnableDefaultItems)' == 'true' And '$(EnableDefaultSassItems)' == 'true'">
-    <SassFile Include="**/*.scss" ExcludeFromSingleFile="true" CopyToPublishDirectory="PreserveNewest" Exclude="$(DefaultSassExcludes);$(DefaultExcludesInProjectFolder);" />
-    <SassFile Include="**/*.sass" ExcludeFromSingleFile="true" Exclude="$(DefaultSassExcludes);$(DefaultExcludesInProjectFolder)" />
+    <SassFile Include="**/*.scss" ExcludeFromSingleFile="true" CopyToPublishDirectory="PreserveNewest" Exclude="$(DefaultSassExcludes);$(DefaultExcludesInProjectFolder);**/_*" />
+    <SassFile Include="**/*.sass" ExcludeFromSingleFile="true" Exclude="$(DefaultSassExcludes);$(DefaultExcludesInProjectFolder);**/_*" />
     <None Remove="**/*.scss" />
     <None Remove="**/*.sass" />
   </ItemGroup>
