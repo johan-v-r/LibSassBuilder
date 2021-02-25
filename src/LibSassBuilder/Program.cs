@@ -82,7 +82,10 @@ namespace LibSassBuilder
 			{
 				var fileInfo = new FileInfo(file);
 				if (fileInfo.Name.StartsWith("_"))
+				{
+					WriteVerbose($"Skipping: {fileInfo.FullName}");
 					continue;
+				}
 
 				WriteVerbose($"Processing: {fileInfo.FullName}");
 
