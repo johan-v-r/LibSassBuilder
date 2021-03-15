@@ -1,5 +1,7 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <!-- https://natemcmaster.com/blog/2017/11/11/build-tools-in-nuget/ -->
+
+  <Import Project="$(MSBuildThisFileDirectory)\DesignTime\LibSassBuilder.DesignTime.targets" Condition="'$(DesignTimeBuild)' == 'true'" />
+
   <PropertyGroup>
     <SassExe Condition=" '$(SassExe)'=='' ">$(MSBuildThisFileDirectory)../tool/LibSassBuilder.dll</SassExe>
     <!-- outputstyle option for lsb (compressed, condensed, nested, expanded) --> 
@@ -11,6 +13,8 @@
 
     <EnableDefaultSassItems Condition="'$(EnableDefaultSassItems)'==''">true</EnableDefaultSassItems>
     <DefaultSassExcludes>**/bin/**;**/obj/**;**/node_modules/**;**/logs/**</DefaultSassExcludes>
+    
+    <DefaultItemExcludes Condition="'$(EnableDefaultSassItems)'=='true'">$(DefaultItemExcludes);**/*.scss;**/*.sass</DefaultItemExcludes>
 
     <!-- Provide LibSassBuilderArgs to take complete control -->
     <LibSassBuilderArgs Condition=" '$(LibSassBuilderArgs)'=='' "></LibSassBuilderArgs>
@@ -18,11 +22,10 @@
     <!-- Add target to CustomCollectWatchItems -->
     <CustomCollectWatchItems>$(CustomCollectWatchItems);_LibSass_CustomCollectWatchItems</CustomCollectWatchItems>
   </PropertyGroup>
-  
+      
   <ItemGroup Condition="'$(EnableDefaultItems)' == 'true' And '$(EnableDefaultSassItems)' == 'true'">
     <SassFile Include="**/*.scss" ExcludeFromSingleFile="true" CopyToPublishDirectory="PreserveNewest" Exclude="$(DefaultSassExcludes);$(DefaultExcludesInProjectFolder);**/_*" />
     <SassFile Include="**/*.sass" ExcludeFromSingleFile="true" Exclude="$(DefaultSassExcludes);$(DefaultExcludesInProjectFolder);**/_*" />
-    <None Remove="**/*.scss" />
-    <None Remove="**/*.sass" />
   </ItemGroup>
+
 </Project>

@@ -1,0 +1,18 @@
+<ProjectSchemaDefinitions xmlns="http://schemas.microsoft.com/build/2009/properties">
+    
+    <ContentType
+        Name="SassSourceFile" 
+        DisplayName="Sass source file" 
+        ItemType="SassFile">
+        <NameValuePair Name="DependentExtensions" Value=".css" />
+    </ContentType>
+    <ItemType 
+        Name="SassFile" 
+        DisplayName="Sass source file"/>
+    <FileExtension 
+        Name=".scss" 
+        ContentType="SassSourceFile" />
+    <FileExtension 
+        Name=".sass" 
+        ContentType="SassSourceFile" />
+</ProjectSchemaDefinitions>
