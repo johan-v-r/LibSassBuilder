@@ -128,21 +128,6 @@ lsb files sources/style/a.scss sources/vendor/b.scss -l verbose
 ```
 ___
 
-
-## Bypass Visual Studio fast up to date check
-
-Visual Studio does a quick check to find changed files. However if you edit the sass files, it does not see these as project changes.  
-If you edit sass files a lot, you can instruct Visual Studio to rely on MSBuild by placing the following property in your `.csproj`.
-
-```xml
-<PropertyGroup>
-    <DisableFastUpToDateCheck>true</DisableFastUpToDateCheck>
-</PropertyGroup>
-```
-
-> The NuGet package also includes the [custom files list to watch](https://docs.microsoft.com/en-us/aspnet/core/tutorials/dotnet-watch?view=aspnetcore-5.0#customize-files-list-to-watch) to track sass files with `dotnet watch` by default.
-___
-
 ## Requirements
 
 `LibSassBuilder` can be installed on any project, however the underlying build tool requires [.NET 5](https://dotnet.microsoft.com/download/dotnet/5.0) installed on the machine.
