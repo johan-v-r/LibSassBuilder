@@ -39,7 +39,7 @@ No configuration is required, it will compile the files implicitly on project bu
 
 <ItemGroup>
   <!-- add files manually -->
-  <SassFile Include="Vendor/**/*.scss" > 
+  <SassFile Include="Vendor/**/*.scss" /> 
   <SassFile Include="Styles/**/*.scss" Exclude="Styles/unused/**" />
 </ItemGroup>
 ```
