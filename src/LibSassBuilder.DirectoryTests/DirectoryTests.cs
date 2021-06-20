@@ -28,7 +28,7 @@ namespace LibSassBuilder.DirectoryTests
 		}
 
 		[Fact]
-		public void ExcludeDirectoryTest()
+		public void IncludedDirectoryTest()
         {
 			var dialogsFile = Path.Join(_fileDirectory, "logs/dialogs/dialog-file.css");
 
