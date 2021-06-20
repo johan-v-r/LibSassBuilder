@@ -19,12 +19,22 @@ namespace LibSassBuilder.DirectoryTests
 			var barFile = Path.Join(_fileDirectory, "foo/bar.css");
 			var binFile = Path.Join(_fileDirectory, "logs/bin/bin-file.css");
 			var logsFile = Path.Join(_fileDirectory, "logs/logs-file.css");
-
+			
 			Assert.False(File.Exists(barFile)); // not in ./logs directory
 			Assert.False(File.Exists(binFile)); // inside ./logs, but excluded by default nested bin folder
 			Assert.True(File.Exists(logsFile)); // inside ./logs
-
+			
 			File.Delete(logsFile);
+		}
+
+		[Fact]
+		public void ExcludeDirectoryTest()
+        {
+			var dialogsFile = Path.Join(_fileDirectory, "logs/dialogs/dialog-file.css");
+
+			Assert.True(File.Exists(dialogsFile)); // inside ./logs/dialogs directory, but excluded as it doesn't explicitly match "logs"
+
+			File.Delete(dialogsFile);
 		}
 	}
 }
