@@ -69,10 +69,11 @@ namespace LibSassBuilder
 			var subDirectories = Directory.EnumerateDirectories(directory);
 			foreach (var subDirectory in subDirectories)
 			{
-				if (excludedDirectories.Any(dir => subDirectory.EndsWith(dir, StringComparison.OrdinalIgnoreCase)))
-					continue;
+				var directoryName = new DirectoryInfo(subDirectory).Name;
+				if (excludedDirectories.Any(dir => string.Equals(dir, directoryName, StringComparison.OrdinalIgnoreCase)))
+                    continue;
 
-				await CompileDirectoriesAsync(subDirectory, excludedDirectories);
+                await CompileDirectoriesAsync(subDirectory, excludedDirectories);
 			}
 		}
 
