@@ -1,6 +1,7 @@
 name: Build
 
 on:
+  workflow_dispatch:
   push:
     branches: [ main ]
     paths:
@@ -31,7 +32,13 @@ jobs:
         dotnet-version: '5.0.x'
     - name: Install dependencies
       run: dotnet restore
-    - name: Build
-      run: dotnet build --configuration Release --no-restore
+    - name: Build LibSassBuilder
+      run: dotnet build ./LibSassBuilder --no-restore
+    - name: Build LibSassBuilder.DirectoryTests
+      run: dotnet build ./LibSassBuilder.DirectoryTests --no-restore
+    - name: Build LibSassBuilder.ExcludeTests
+      run: dotnet build ./LibSassBuilder.ExcludeTests --no-restore
+    - name: Build LibSassBuilder.Tests
+      run: dotnet build ./LibSassBuilder.Tests --no-restore
     - name: Test
       run: dotnet test --no-restore --verbosity normal
