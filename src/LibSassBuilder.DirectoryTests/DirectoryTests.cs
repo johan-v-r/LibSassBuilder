@@ -32,7 +32,7 @@ namespace LibSassBuilder.DirectoryTests
         {
 			var dialogsFile = Path.Join(_fileDirectory, "logs/dialogs/dialog-file.css");
 
-			Assert.True(File.Exists(dialogsFile)); // inside ./logs/dialogs directory, but excluded as it doesn't explicitly match "logs"
+			Assert.True(File.Exists(dialogsFile)); // inside ./logs/dialogs directory, but included as it doesn't explicitly match "logs"
 
 			File.Delete(dialogsFile);
 		}
