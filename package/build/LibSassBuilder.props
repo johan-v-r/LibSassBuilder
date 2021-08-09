@@ -14,7 +14,13 @@
     <EnableDefaultSassItems Condition="'$(EnableDefaultSassItems)'==''">true</EnableDefaultSassItems>
     <DefaultSassExcludes>**/bin/**;**/obj/**;**/node_modules/**;**/logs/**</DefaultSassExcludes>
     
-    <DefaultItemExcludes Condition="'$(EnableDefaultSassItems)'=='true'">$(DefaultItemExcludes);**/*.scss;**/*.sass</DefaultItemExcludes>
+    <!-- 
+      exclude for VS - https://docs.microsoft.com/en-us/visualstudio/msbuild/visual-studio-integration-msbuild#build-solutions 
+      required from this issue (VS bug) - https://github.com/johan-v-r/LibSassBuilder/issues/15
+      -->
+    <DefaultItemExcludes Condition="'$(EnableDefaultSassItems)'=='true' and '$(BuildingInsideVisualStudio)'=='true'">
+      $(DefaultItemExcludes);**/*.scss;**/*.sass
+    </DefaultItemExcludes>
 
     <!-- Provide LibSassBuilderArgs to take complete control -->
     <LibSassBuilderArgs Condition=" '$(LibSassBuilderArgs)'=='' "></LibSassBuilderArgs>
@@ -22,10 +28,14 @@
     <!-- Add target to CustomCollectWatchItems -->
     <CustomCollectWatchItems>$(CustomCollectWatchItems);_LibSass_CustomCollectWatchItems</CustomCollectWatchItems>
   </PropertyGroup>
-      
+  
   <ItemGroup Condition="'$(EnableDefaultItems)' == 'true' And '$(EnableDefaultSassItems)' == 'true'">
-    <SassFile Include="**/*.scss" ExcludeFromSingleFile="true" CopyToPublishDirectory="PreserveNewest" Exclude="$(DefaultSassExcludes);$(DefaultExcludesInProjectFolder);**/_*" />
-    <SassFile Include="**/*.sass" ExcludeFromSingleFile="true" Exclude="$(DefaultSassExcludes);$(DefaultExcludesInProjectFolder);**/_*" />
+    <!-- add all sass files -->
+    <SassFile Include="**/*.scss" ExcludeFromSingleFile="true" CopyToPublishDirectory="PreserveNewest" Exclude="$(DefaultSassExcludes);$(DefaultExcludesInProjectFolder)" />
+    <SassFile Include="**/*.sass" ExcludeFromSingleFile="true" Exclude="$(DefaultSassExcludes);$(DefaultExcludesInProjectFolder)" />
+
+    <!-- filter out variable files that don't get compiled -->
+    <SassFilesToCompile Include="@(SassFile)" Exclude="**/_*.scss;**/_*.sass"></SassFilesToCompile>
   </ItemGroup>
 
 </Project>
