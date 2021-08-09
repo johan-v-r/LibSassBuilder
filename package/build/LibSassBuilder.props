@@ -30,12 +30,12 @@
   </PropertyGroup>
   
   <ItemGroup Condition="'$(EnableDefaultItems)' == 'true' And '$(EnableDefaultSassItems)' == 'true'">
-    <!-- add sass files that must be compiled (also gets tracked by VS) -->
-    <SassFile Include="**/*.scss" ExcludeFromSingleFile="true" CopyToPublishDirectory="PreserveNewest" Exclude="$(DefaultSassExcludes);$(DefaultExcludesInProjectFolder);**/_*" />
-    <SassFile Include="**/*.sass" ExcludeFromSingleFile="true" Exclude="$(DefaultSassExcludes);$(DefaultExcludesInProjectFolder);**/_*" />
+    <!-- add all sass files -->
+    <SassFile Include="**/*.scss" ExcludeFromSingleFile="true" CopyToPublishDirectory="PreserveNewest" Exclude="$(DefaultSassExcludes);$(DefaultExcludesInProjectFolder)" />
+    <SassFile Include="**/*.sass" ExcludeFromSingleFile="true" Exclude="$(DefaultSassExcludes);$(DefaultExcludesInProjectFolder)" />
 
-    <!-- add all other sass files to show up in VS -->
-    <None Condition="'$(BuildingInsideVisualStudio)'=='true'" Include="**/_*.scss;**/_*.sass" />
+    <!-- filter out variable files that don't get compiled -->
+    <SassFilesToCompile Include="@(SassFile)" Exclude="**/_*.scss;**/_*.sass"></SassFilesToCompile>
   </ItemGroup>
 
 </Project>

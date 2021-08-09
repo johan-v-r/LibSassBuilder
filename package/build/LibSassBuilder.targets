@@ -72,7 +72,7 @@
           BeforeTargets="BeforeBuild"  
           Condition="'$(_LibSassHashChanged)-$(LibSassShouldBuildBasedOnSassFiles)' == 'true-true' ">
     <PropertyGroup>
-      <_SassFileList>@(SassFile->'&quot;%(FullPath)&quot;', ' ')</_SassFileList> <!-- all files, space seperated, surrounded with quotes -->
+      <_SassFileList>@(SassFilesToCompile->'&quot;%(FullPath)&quot;', ' ')</_SassFileList> <!-- all valid files, space seperated, surrounded with quotes -->
       <LibSassBuilderArgs>files $(_SassFileList) --outputstyle $(LibSassOutputStyle) --level $(LibSassOutputLevel)</LibSassBuilderArgs>
     </PropertyGroup>
     <Message Text="Converted SassFile list to argument" Importance="$(LibSassMessageLevel)" />
