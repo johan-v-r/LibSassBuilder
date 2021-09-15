@@ -1,5 +1,6 @@
 ﻿using CommandLine;
-using LibSassHost;
+using DartSassHost;
+using JavaScriptEngineSwitcher.ChakraCore;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -79,6 +80,8 @@ namespace LibSassBuilder
 
 		async Task CompileFilesAsync(IEnumerable<string> sassFiles)
 		{
+			using var sassCompiler = new SassCompiler(new ChakraCoreJsEngineFactory(), Options.SassCompilationOptions);
+
 			foreach (var file in sassFiles)
 			{
 				var fileInfo = new FileInfo(file);
@@ -90,7 +93,7 @@ namespace LibSassBuilder
 
 				WriteVerbose($"Processing: {fileInfo.FullName}");
 
-				var result = SassCompiler.CompileFile(file, options: Options.SassCompilationOptions);
+				var result = sassCompiler.CompileFile(file);
 
 				var newFile = fileInfo.FullName.Replace(fileInfo.Extension, ".css");
 

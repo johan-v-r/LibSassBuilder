@@ -1,0 +1,7 @@
+@use "node_modules/ourmodule" as b;
+@use "sass:color";
+
+body {
+    @include b.float-left;
+    color: color.adjust(#6b717f, $red: 15);
+}

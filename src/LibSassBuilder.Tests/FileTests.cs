@@ -16,6 +16,7 @@ namespace LibSassBuilder.Tests
 		[Theory]
 		[InlineData("test-new-format.css")]
 		[InlineData("test-indented-format.css")]
+		[InlineData("test-dart-format.css")]
 		public void FileExistsTest(string cssFileName)
 		{
 			var cssFilePath = Path.Join(_fileDirectory, cssFileName);
