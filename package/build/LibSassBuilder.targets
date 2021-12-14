@@ -6,6 +6,11 @@
     <LibSassShouldBuildBasedOnSassFiles>false</LibSassShouldBuildBasedOnSassFiles>
     <LibSassShouldBuildBasedOnSassFiles Condition=" '$(LibSassBuilderArgs)'=='' ">true</LibSassShouldBuildBasedOnSassFiles>
   </PropertyGroup>
+
+  <ItemGroup>
+    <!-- filter out variable files that don't get compiled -->
+    <SassFilesToCompile Include="@(SassFile)" Exclude="**/_*.scss;**/_*.sass"></SassFilesToCompile>
+  </ItemGroup>
   
 <!--
   Target used by dotnet-watch to resolve additional items.

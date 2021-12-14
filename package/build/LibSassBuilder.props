@@ -33,9 +33,6 @@
     <!-- add all sass files -->
     <SassFile Include="**/*.scss" ExcludeFromSingleFile="true" CopyToPublishDirectory="PreserveNewest" Exclude="$(DefaultSassExcludes);$(DefaultExcludesInProjectFolder)" />
     <SassFile Include="**/*.sass" ExcludeFromSingleFile="true" Exclude="$(DefaultSassExcludes);$(DefaultExcludesInProjectFolder)" />
-
-    <!-- filter out variable files that don't get compiled -->
-    <SassFilesToCompile Include="@(SassFile)" Exclude="**/_*.scss;**/_*.sass"></SassFilesToCompile>
   </ItemGroup>
 
 </Project>

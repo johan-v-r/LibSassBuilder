@@ -2,7 +2,7 @@
 <package>
   <metadata>
     <id>LibSassBuilder</id>
-    <version>2.0.0</version>
+    <version>2.0.1</version>
     <title>LibSassBuilder</title>
     <summary>Auto build task to compile .scss/.sass files to .css</summary>
     <authors>Johan van Rensburg</authors>
