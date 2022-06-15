@@ -79,6 +79,16 @@ namespace LibSassBuilder
 
 		async Task CompileFilesAsync(IEnumerable<string> sassFiles)
 		{
+            if (Options.OutputLevel >= OutputLevel.Verbose &&
+				Options.SassCompilationOptions.IncludePaths is not null &&
+                Options.SassCompilationOptions.IncludePaths.Count != 0)
+            {
+				WriteVerbose($"Include paths:");
+
+				foreach(var path in Options.SassCompilationOptions.IncludePaths)
+					WriteVerbose($"\t{path}");
+            }
+
 			foreach (var file in sassFiles)
 			{
 				var fileInfo = new FileInfo(file);
