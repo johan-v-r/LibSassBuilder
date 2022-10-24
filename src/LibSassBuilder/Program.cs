@@ -71,9 +71,9 @@ namespace LibSassBuilder
 			{
 				var directoryName = new DirectoryInfo(subDirectory).Name;
 				if (excludedDirectories.Any(dir => string.Equals(dir, directoryName, StringComparison.OrdinalIgnoreCase)))
-                    continue;
+                    			continue;
 
-                await CompileDirectoriesAsync(subDirectory, excludedDirectories);
+                		await CompileDirectoriesAsync(subDirectory, excludedDirectories);
 			}
 		}
 
@@ -94,7 +94,7 @@ namespace LibSassBuilder
 
 				var newFile = fileInfo.FullName.Replace(fileInfo.Extension, ".css");
 
-				if (File.Exists(newFile) && result.CompiledContent == await File.ReadAllTextAsync(newFile))
+				if (File.Exists(newFile) && result.CompiledContent.ReplaceLineEndings() == (await File.ReadAllTextAsync(newFile)).ReplaceLineEndings())
 					continue;
 
 				await File.WriteAllTextAsync(newFile, result.CompiledContent);
