@@ -3,7 +3,7 @@
   <Import Project="$(MSBuildThisFileDirectory)\DesignTime\LibSassBuilder.DesignTime.targets" Condition="'$(DesignTimeBuild)' == 'true'" />
 
   <PropertyGroup>
-    <SassExe Condition=" '$(SassExe)'=='' ">$(MSBuildThisFileDirectory)../tool/LibSassBuilder.exe</SassExe>
+    <SassExe Condition=" '$(SassExe)'=='' ">$(MSBuildThisFileDirectory)../tool/LibSassBuilder</SassExe>
     <!-- outputstyle option for lsb (compressed, condensed, nested, expanded) --> 
     <LibSassOutputStyle Condition=" '$(LibSassOutputStyle)'=='' ">compressed</LibSassOutputStyle> 
     <!-- level option for lsb -->
