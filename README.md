@@ -138,6 +138,7 @@ The support is largely dependant on [LibSassHost](https://github.com/Taritsyn/Li
 
 This tool contains the following supporting packages:
 - LibSassHost.Native.win-x64
+- LibSassHost.Native.win-x86
 - LibSassHost.Native.linux-x64
 - LibSassHost.Native.osx-x64
 
