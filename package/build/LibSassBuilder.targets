@@ -92,7 +92,7 @@
           Condition="'$(LibSassBuilderArgs)' != ''  ">
     <Message Text="Invoking sass preprocessor..." Importance="$(LibSassMessageLevel)" />
 
-    <Exec Command="&quot;$(SassExe)&quot; $(LibSassBuilderArgs) "/>
+    <Exec Command="dotnet &quot;$(SassExe)&quot; $(LibSassBuilderArgs) "/>
   </Target>
 
 <!-- 
