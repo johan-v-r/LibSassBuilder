@@ -76,7 +76,7 @@ lsb help files
  ```
 -l, --level      Specify the level of output (silent, default, verbose)
 
---outputstyle    Specify the style of output (compressed, condensed, nested, expanded)
+--outputstyle    Specify the style of output (compressed, compact, nested, expanded)
 ```
 
 ## Directory command (default)
