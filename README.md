@@ -130,7 +130,10 @@ ___
 
 ## Requirements
 
-`LibSassBuilder` can be installed on any project, however the underlying build tool requires [.NET 6](https://dotnet.microsoft.com/download/dotnet/6.0) installed on the machine. (.NET 5 required with `v1.x`)
+`LibSassBuilder` can be installed on any project, however the underlying build tool requires [.NET 7](https://dotnet.microsoft.com/download/dotnet/7.0) installed on the machine.  
+
+> .NET 5 required with `v1.x`  
+> .NET 6 required with `v2.x`
 
 ## Support
 
