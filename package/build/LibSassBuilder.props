@@ -4,7 +4,7 @@
 
   <PropertyGroup>
     <SassExe Condition=" '$(SassExe)'=='' ">$(MSBuildThisFileDirectory)../tool/LibSassBuilder.dll</SassExe>
-    <!-- outputstyle option for lsb (compressed, condensed, nested, expanded) --> 
+    <!-- outputstyle option for lsb (compressed, compact, nested, expanded) --> 
     <LibSassOutputStyle Condition=" '$(LibSassOutputStyle)'=='' ">compressed</LibSassOutputStyle> 
     <!-- level option for lsb -->
     <LibSassOutputLevel Condition=" '$(LibSassOutputLevel)'=='' ">default</LibSassOutputLevel> 
