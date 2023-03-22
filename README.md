@@ -1,3 +1,8 @@
+# Project replaced with [DartSassBuilder](https://github.com/deanwiseman/DartSassBuilder)
+
+This project will be archived due to [LibSass](https://sass-lang.com/libsass) deprecation.
+> "LibSass is now deprecated—new projects should use Dart Sass instead." - https://sass-lang.com/libsass
+
 # LibSassBuilder
 
 > Inspired by [Delegate.SassBuilder](https://github.com/delegateas/Delegate.SassBuilder) and [LibSassHost](https://github.com/Taritsyn/LibSassHost)
