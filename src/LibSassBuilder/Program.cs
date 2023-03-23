@@ -93,11 +93,13 @@ namespace LibSassBuilder
 				var result = SassCompiler.CompileFile(file, options: Options.SassCompilationOptions);
 
 				var newFile = fileInfo.FullName.Replace(fileInfo.Extension, ".css");
+				var newMapFile = fileInfo.FullName.Replace(fileInfo.Extension, ".css.map");
 
-				if (File.Exists(newFile) && result.CompiledContent.ReplaceLineEndings() == (await File.ReadAllTextAsync(newFile)).ReplaceLineEndings())
-					continue;
+				if (!(File.Exists(newFile) && result.CompiledContent.ReplaceLineEndings() == (await File.ReadAllTextAsync(newFile)).ReplaceLineEndings()))
+					await File.WriteAllTextAsync(newFile, result.CompiledContent);
 
-				await File.WriteAllTextAsync(newFile, result.CompiledContent);
+				if (!(string.IsNullOrEmpty(result.SourceMap) || (File.Exists(newMapFile) && result.CompiledContent.ReplaceLineEndings() == (await File.ReadAllTextAsync(newMapFile)).ReplaceLineEndings())))
+					await File.WriteAllTextAsync(newMapFile, result.SourceMap);
 			}
 		}
 

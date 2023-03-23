@@ -30,6 +30,19 @@ namespace LibSassBuilder
                 SassCompilationOptions.OutputStyle = value;
             }
         }
+
+        [Option("sourcemap", Required = false, HelpText = "Flag for whether to enable source map generation.")]
+        public bool SourceMap
+        {
+            get
+            {
+                return SassCompilationOptions.SourceMap;
+            }
+            set
+            {
+                SassCompilationOptions.SourceMap = value;
+            }
+        }
     }
 
     public enum OutputLevel
