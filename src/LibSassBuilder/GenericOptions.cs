@@ -30,6 +30,19 @@ namespace LibSassBuilder
                 SassCompilationOptions.OutputStyle = value;
             }
         }
+
+        [Option('i', "include", Required = false, HelpText = "Specify the include paths.")]
+        public IEnumerable<string> IncludeDirectories
+        {
+            get
+            {
+                return SassCompilationOptions.IncludePaths;
+            }
+            set
+            {
+                SassCompilationOptions.IncludePaths = value?.ToList();
+            }
+        }
     }
 
     public enum OutputLevel
